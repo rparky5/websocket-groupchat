@@ -5,6 +5,10 @@
 // Room is an abstraction of a chat channel
 const Room = require("./Room");
 
+const axios = require("axios");
+
+const DAD_JOKE_URL = "https://icanhazdadjoke.com/"
+
 /** ChatUser is a individual connection from client -> server to chat. */
 
 class ChatUser {
@@ -72,15 +76,36 @@ class ChatUser {
    * </code>
    */
 
-  handleMessage(jsonData) {
+  async handleMessage(jsonData) {
     let msg = JSON.parse(jsonData);
 
-    if (msg.type === "join") this.handleJoin(msg.name);
-    else if (msg.type === "chat") this.handleChat(msg.text);
-    else throw new Error(`bad message: ${msg.type}`);
+    if (msg.type === "join") {
+      this.handleJoin(msg.name);
+    } else if (msg.type === "chat") {
+      if (msg.text === "/joke") {
+        await this.handleJoke();
+      } else {
+        this.handleChat(msg.text);
+      }
+    } else {
+      throw new Error(`bad message: ${msg.type}`);
+    }
   }
 
   /** Connection was closed: leave room, announce exit to others. */
+
+  async handleJoke() {
+    let response = await axios({
+      method: 'get',
+      url: DAD_JOKE_URL,
+      headers: {
+        'Accept': 'text/plain'
+      }
+    });
+    let joke = response.data;
+    console.log(joke);
+    this._send(joke);
+  }
 
   handleClose() {
     this.room.leave(this);

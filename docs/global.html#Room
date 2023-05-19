@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Class: ChatUser</title>
+    <title>JSDoc: Class: Room</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Class: ChatUser</h1>
+    <h1 class="page-title">Class: Room</h1>
 
     
 
@@ -28,9 +28,10 @@
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>ChatUser<span class="signature">(send, room)</span><span class="type-signature"></span></h2>
+        <h2><span class="attribs"><span class="type-signature"></span></span>Room<span class="signature">(roomName)</span><span class="type-signature"></span></h2>
         
-            <div class="class-description">ChatUser is a individual connection from client -> server to chat.</div>
+            <div class="class-description">Room is a collection of listening members; this becomes a "chat room"
+  where individual users can join/leave/broadcast to.</div>
         
     
 </header>
@@ -45,7 +46,7 @@
     
 
     
-    <h4 class="name" id="ChatUser"><span class="type-signature"></span>new ChatUser<span class="signature">(send, room)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="Room"><span class="type-signature"></span>new Room<span class="signature">(roomName)</span><span class="type-signature"></span></h4>
     
 
     
@@ -53,7 +54,7 @@
 
 
 <div class="description">
-    Make chat user: store connection-device, room.
+    Make a new room, starting with empty set of listeners.
 </div>
 
 
@@ -89,13 +90,13 @@
 
         <tr>
             
-                <td class="name"><code>send</code></td>
+                <td class="name"><code>roomName</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">function</span>
+<span class="param-type">string</span>
 
 
             
@@ -105,30 +106,7 @@
 
             
 
-            <td class="description last">callback to send message to this user</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>room</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="global.html#Room">Room</a></span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">room user will be in</td>
+            <td class="description last">room name for new room</td>
         </tr>
 
     
@@ -169,7 +147,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ChatUser.js.html">ChatUser.js</a>, <a href="ChatUser.js.html#line10">line 10</a>
+        <a href="Room.js.html">Room.js</a>, <a href="Room.js.html#line13">line 13</a>
     </li></ul></dd>
     
 
@@ -225,7 +203,7 @@
     
 
     
-    <h4 class="name" id="handleChat"><span class="type-signature"></span>handleChat<span class="signature">(text)</span><span class="type-signature"></span></h4>
+    <h4 class="name" id=".get"><span class="type-signature">(static) </span>get<span class="signature">(roomName)</span><span class="type-signature"></span></h4>
     
 
     
@@ -233,7 +211,12 @@
 
 
 <div class="description">
-    Handle a chat: broadcast to room.
+    Get room by that name, creating if nonexistent.
+<p>
+This uses a programming pattern often called a "registry" ---
+users of this class only need to .get to find a room; they don't
+need to know about the `rooms` variable that holds the rooms. To
+them, the Room class manages all of this stuff for them.
 </div>
 
 
@@ -269,7 +252,7 @@
 
         <tr>
             
-                <td class="name"><code>text</code></td>
+                <td class="name"><code>roomName</code></td>
             
 
             <td class="type">
@@ -285,7 +268,7 @@
 
             
 
-            <td class="description last">message to send</td>
+            <td class="description last">room to get</td>
         </tr>
 
     
@@ -326,7 +309,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ChatUser.js.html">ChatUser.js</a>, <a href="ChatUser.js.html#line57">line 57</a>
+        <a href="Room.js.html">Room.js</a>, <a href="Room.js.html#line24">line 24</a>
     </li></ul></dd>
     
 
@@ -362,7 +345,7 @@
     
 
     
-    <h4 class="name" id="handleClose"><span class="type-signature"></span>handleClose<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="broadcast"><span class="type-signature"></span>broadcast<span class="signature">(data)</span><span class="type-signature"></span></h4>
     
 
     
@@ -370,369 +353,7 @@
 
 
 <div class="description">
-    Connection was closed: leave room, announce exit to others.
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ChatUser.js.html">ChatUser.js</a>, <a href="ChatUser.js.html#line85">line 85</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="handleJoin"><span class="type-signature"></span>handleJoin<span class="signature">(name)</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    Handle joining: add to room members, announce join.
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>name</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">name to use in room</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ChatUser.js.html">ChatUser.js</a>, <a href="ChatUser.js.html#line43">line 43</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="handleMessage"><span class="type-signature"></span>handleMessage<span class="signature">(jsonData)</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    Handle messages from client:
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>jsonData</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">raw message data</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-
-
-
-
-
-<dl class="details">
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ChatUser.js.html">ChatUser.js</a>, <a href="ChatUser.js.html#line75">line 75</a>
-    </li></ul></dd>
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-            
-
-    
-
-    
-    <h4 class="name" id="send"><span class="type-signature"></span>send<span class="signature">(data)</span><span class="type-signature"></span></h4>
-    
-
-    
-
-
-
-<div class="description">
-    Send msgs to this client using underlying connection-send-function.
+    Send message to all members in a room.
 </div>
 
 
@@ -825,7 +446,281 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="ChatUser.js.html">ChatUser.js</a>, <a href="ChatUser.js.html#line30">line 30</a>
+        <a href="Room.js.html">Room.js</a>, <a href="Room.js.html#line65">line 65</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="join"><span class="type-signature"></span>join<span class="signature">(member)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Handle member joining a room.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>member</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ChatUser.html">ChatUser</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">joining member</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Room.js.html">Room.js</a>, <a href="Room.js.html#line47">line 47</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="leave"><span class="type-signature"></span>leave<span class="signature">(member)</span><span class="type-signature"></span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Handle member leaving a room.
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>member</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="ChatUser.html">ChatUser</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">leaving member</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="Room.js.html">Room.js</a>, <a href="Room.js.html#line56">line 56</a>
     </li></ul></dd>
     
 
