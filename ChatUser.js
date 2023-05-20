@@ -84,6 +84,8 @@ class ChatUser {
     } else if (msg.type === "chat") {
       if (msg.text === "/joke") {
         await this.handleJoke();
+      } else if (msg.text === "/members") {
+        this.handleMembers();
       } else {
         this.handleChat(msg.text);
       }
@@ -92,7 +94,7 @@ class ChatUser {
     }
   }
 
-  /** Connection was closed: leave room, announce exit to others. */
+  /** Handle a joke request: only send to user that requested joke. */
 
   async handleJoke() {
     let response = await axios({
@@ -102,10 +104,36 @@ class ChatUser {
         'Accept': 'text/plain'
       }
     });
-    let joke = response.data;
-    console.log(joke);
-    this._send(joke);
+    let joke = {
+      name: this.name,
+      type: "chat",
+      text: response.data
+    };
+
+    this.send(JSON.stringify(joke));
   }
+
+  /** Handle a member list request: only send to user that requested members. */
+
+  handleMembers() {
+    let roomMems = [];
+    this.room.members.forEach(member => {
+      roomMems.push(member.name);
+    });
+
+    let chatMembers = `In room: ${roomMems.join(', ')}`;
+
+    let membersMessage = {
+      name: this.name,
+      type: "chat",
+      text: chatMembers
+    };
+
+    this.send(JSON.stringify(membersMessage));
+  }
+
+
+  /** Connection was closed: leave room, announce exit to others. */
 
   handleClose() {
     this.room.leave(this);

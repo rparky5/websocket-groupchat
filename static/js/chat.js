@@ -24,7 +24,7 @@ ws.onopen = function (evt) {
 
 ws.onmessage = function (evt) {
   console.log("message", evt);
-
+  
   let msg = JSON.parse(evt.data);
   let item;
 
